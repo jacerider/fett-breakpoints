@@ -1,0 +1,23 @@
+{
+  "name": "fett-breakpoints",
+  "version": "1.0.0",
+  "description": "Convert Drupal 8:s breakpoints (*.breakpoints.yml) to scss $variables.",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacerider/fett-breakpoints.git"
+  },
+  "author": "Jens Lind",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacerider/fett-breakpoints/issues"
+  },
+  "homepage": "https://github.com/jacerider/fett-breakpoints#readme",
+  "dependencies": {
+    "through2": "^2.0.0",
+    "yamljs": "^0.2.4"
+  }
+}
