@@ -4,14 +4,18 @@ const fs = require('fs')
 const stream = require('stream')
 const through = require('through2')
 
-// Midnight oil <3
-const howCanWeSleepWhileOurBedsAreBurning = {}
+const fettBreakpoints = {}
 
-function jsonToScssVars (obj) {
+function jsonToScssVars (obj, path) {
   let labels = [];
-  let scssVars = '$breakpoints: ('
+  let scssVars = '/**\n'
+  scssVars += ' * This file is dynamically generated from:\n'
+  scssVars += ' * ' + path + '\n'
+  scssVars += ' */\n\n'
+  scssVars += '$breakpoints: (\n'
   for (let i in obj) {
-    scssVars += '$' + obj[i].label + ': \'' + obj[i].mediaQuery + '\';\n'
+    obj[i].mediaQuery = obj[i].mediaQuery ? obj[i].mediaQuery : '0';
+    scssVars += '  ' + obj[i].label + ': ' + obj[i].mediaQuery + ',\n'
     labels.push(obj[i].label)
   }
   scssVars += ');\n'
@@ -21,30 +25,30 @@ function jsonToScssVars (obj) {
   return scssVars
 }
 
-howCanWeSleepWhileOurBedsAreBurning.read = function (path) {
+fettBreakpoints.read = function (path) {
   let rs = stream.Readable()
   let breakpoints = YAML.load(path)
 
   rs._read = function () {
-    rs.push(jsonToScssVars(breakpoints))
+    rs.push(jsonToScssVars(breakpoints, path))
     rs.push(null)
   }
 
   return rs
 }
 
-howCanWeSleepWhileOurBedsAreBurning.write = function (path) {
+fettBreakpoints.write = function (path) {
   let scssFile = fs.createWriteStream(path)
   return scssFile
 }
 
-howCanWeSleepWhileOurBedsAreBurning.ymlToScss = function () {
+fettBreakpoints.ymlToScss = function () {
   return through.obj(function (file, enc, cb) {
     var content = file.contents.toString('utf8')
     var parsedYaml = YAML.parse(content)
-    file.contents = new Buffer(String(jsonToScssVars(parsedYaml)))
+    file.contents = new Buffer(String(jsonToScssVars(parsedYaml, file.path)))
     cb(null, file)
   })
 }
 
-module.exports = howCanWeSleepWhileOurBedsAreBurning
+module.exports = fettBreakpoints
