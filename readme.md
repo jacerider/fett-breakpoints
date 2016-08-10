@@ -1,6 +1,6 @@
 # Fett Breakpoints
 
-> Convert Drupal 8:s breakpoints (`*.breakpoints.yml`) to scss `$variables`.
+> Convert Drupal 8's breakpoints (`*.breakpoints.yml`) to scss `$variables`.
 
 ## Install
 ```
