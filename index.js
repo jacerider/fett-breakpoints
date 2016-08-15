@@ -19,21 +19,17 @@ function jsonToScssVars (obj, path) {
     labels.push(obj[i].label)
   }
   scssVars += ');\n'
-
   scssVars += '$breakpoint-classes: (' + labels.join(' ') + ');\n'
-
   return scssVars
 }
 
 fettBreakpoints.read = function (path) {
   let rs = stream.Readable()
   let breakpoints = YAML.load(path)
-
   rs._read = function () {
     rs.push(jsonToScssVars(breakpoints, path))
     rs.push(null)
   }
-
   return rs
 }
 
