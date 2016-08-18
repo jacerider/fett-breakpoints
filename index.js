@@ -1,6 +1,7 @@
 'use strict'
 const YAML = require('yamljs')
 const fs = require('fs')
+const path = require('path')
 const stream = require('stream')
 const through = require('through2')
 
@@ -42,7 +43,8 @@ fettBreakpoints.ymlToScss = function () {
   return through.obj(function (file, enc, cb) {
     var content = file.contents.toString('utf8')
     var parsedYaml = YAML.parse(content)
-    file.contents = new Buffer(String(jsonToScssVars(parsedYaml, file.path)))
+    var relative = path.relative(file.cwd, file.path);
+    file.contents = new Buffer(String(jsonToScssVars(parsedYaml, relative)))
     cb(null, file)
   })
 }
