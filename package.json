@@ -1,6 +1,6 @@
 {
   "name": "fett-breakpoints",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert Drupal 8:s breakpoints (*.breakpoints.yml) to scss $variables.",
   "main": "index.js",
   "scripts": {
