@@ -10,13 +10,15 @@ const fettBreakpoints = {}
 function jsonToScssVars (obj, path) {
   let labels = [];
   let scssVars = '/**\n'
+  let mediaQuery;
   scssVars += ' * This file is dynamically generated from:\n'
   scssVars += ' * ' + path + '\n'
   scssVars += ' */\n\n'
   scssVars += '$breakpoints: (\n'
   for (let i in obj) {
-    obj[i].mediaQuery = obj[i].mediaQuery ? obj[i].mediaQuery : '0';
-    scssVars += '  ' + obj[i].label + ': ' + obj[i].mediaQuery + ',\n'
+    mediaQuery = obj[i].mediaQuery.match(/([0-9]+em|[0-9]+px)(?=[^0-9]*$)/);
+    mediaQuery = mediaQuery && mediaQuery[0] ? mediaQuery[0] : '0';
+    scssVars += '  ' + obj[i].label + ': ' + mediaQuery + ','  + ' // converted from "' + (obj[i].mediaQuery || 0) + '"\n'
     labels.push(obj[i].label)
   }
   scssVars += ');\n'
